@@ -80,7 +80,25 @@ Before use the scripts you should configure your AWS CLI.
 Create an instance inside the default VPC, passing bootstrap.sh as a parameter.
 
 ### bootstrap.sh
-Used by create.sh, but can be used at AWS console.
+Used by create.sh, but can be used at AWS console. Installs nginx, enable, start and create the version file.
 
 ### check.sh
-Will check if the version.txt is correct at configured IP/Host 
+Will check if the version.txt is correct at configured IP/Host
+
+## Extras
+
+### CloudFormation - ec2.json
+Launch a t2.micro running Amazon Linux and engage SG. Bootstrap with user data
+and outputs Public IP, Private IP and AZ.
+
+### Chef - nginx.rb
+Just a simple recipe file for the code challenge. In production you should consider use the packache from chef team. https://supermarket.chef.io/cookbooks/chef_nginx
+
+### ELB - lb.sh
+Check if you have instance and put inside a configured elb. If you have more than one instance, will ask you for choose an instance.
+
+### Docker - docker.sh
+You must have docker installed and running. Pull nginx image, run detached and expose port 80. Create the version file and copy to the container.
+
+### SSH Check - check_ssh.sh
+SSH into the instance and check if there are any nginx process. If not will try to start it once. SSH options are provided to avoid SSH questions.
