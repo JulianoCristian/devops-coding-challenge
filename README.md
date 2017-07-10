@@ -72,7 +72,7 @@ Good question. Feel free to tell us how to make the test better. Or, you know, f
 # Solutions
 
 All the scripts have variables for configuration. No one will accept parameters.
-Before use the scripts you should configure your AWS CLI.
+Before use the scripts you should configure your AWS CLI, using JSON as output. Also your default VPC must be there. There are no error treatment on AWS API. So if someone runs the script, should pay attention to the JSON returned.
 
 ## Mandatory
 
