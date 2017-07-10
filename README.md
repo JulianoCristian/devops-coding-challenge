@@ -1,6 +1,8 @@
 Infrastructure Coding Test
 ==========================
 
+# CAUTION: DO NOT RUN THIS CODE IN PRODUCTION ENVIRONMENT. IT'S A CODING TEST
+
 # Goal
 
 Script the creation of a web server, and a script to check the server is up.
@@ -66,3 +68,19 @@ If we proceed to a phone interview, we’ll be asking questions about why you ma
 #### Why doesn't the test include X?
 
 Good question. Feel free to tell us how to make the test better. Or, you know, fork it and improve it!
+
+# Solutions
+
+All the scripts have variables for configuration. No one will accept parameters.
+Before use the scripts you should configure your AWS CLI.
+
+## Mandatory
+
+### create.sh
+Create an instance inside the default VPC, passing bootstrap.sh as a parameter.
+
+### bootstrap.sh
+Used by create.sh, but can be used at AWS console.
+
+### check.sh
+Will check if the version.txt is correct at configured IP/Host 
