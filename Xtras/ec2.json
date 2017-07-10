@@ -1,0 +1,66 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Template to launch an Amazon Linux instance.",
+  "Parameters": {
+    "KeyName": {
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+    },
+      "SecurityGroupIds": {
+      "Description": "Security groups that can be used to access the EC2 instances",
+      "Type": "AWS::EC2::SecurityGroup::Id",
+      "ConstraintDescription": "must be list of EC2 security group ids"
+    },
+      "SubnetId": {
+      "Description": "Id of Subnet of the instance",
+      "Type": "AWS::EC2::Subnet::Id",
+      "ConstraintDescription": "must be a SubnetId"
+    }
+  },
+
+  "Resources" :
+  {
+    "Ec2Instance" :
+    {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" :
+      {
+        "ImageId" : "ami-a4c7edb2",
+        "KeyName": { "Ref": "KeyName" },
+        "InstanceType" : "t2.micro",
+        "NetworkInterfaces" : [{
+          "GroupSet"                 : [{ "Ref" : "SecurityGroupIds" }],
+          "DeviceIndex"              : "0",
+          "DeleteOnTermination"      : "true",
+          "SubnetId"                 : { "Ref" : "SubnetId" }
+        }],
+        "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
+             "#!/bin/sh\n",
+             "yum -y install nginx\n",
+             "chkconfig nginx on\n",
+             "service nginx start\n",
+             "echo 1.0.6 > /usr/share/nginx/html/version.txt"
+		    ]]}}
+      }
+    }
+  },
+  "Outputs" : {
+    "InstanceID" : {
+    "Description": "The Instance ID",
+    "Value" : { "Ref" : "Ec2Instance" }
+    },
+    "AZ" : {
+      "Description" : "Availability Zone of the newly created EC2 instance",
+      "Value" : { "Fn::GetAtt" : [ "Ec2Instance", "AvailabilityZone" ] }
+    },
+    "PrivateIP" : {
+      "Description" : "Private IP of the newly created EC2 instance",
+      "Value" : { "Fn::GetAtt" : [ "Ec2Instance", "PrivateIp" ] }
+    },
+    "PublicIP" : {
+      "Description" : "Public IP of the newly created EC2 instance",
+      "Value" : { "Fn::GetAtt" : [ "Ec2Instance", "PublicIp" ] }
+    }
+  }
+}
